@@ -177,6 +177,7 @@
 
 
                         <!-- Botón Me Gusta -->
+                        {% if publication.user.id is defined and publication.user.id != app.user.id %}
                         <div class="like d-flex justify-content-end mt-2">
                             <span data-id="{{publication.id}}" class="btn btn-like icon-like {{ app.user | liked(publication) ? 'd-none' : '' }}" data-toggle="tooltip" data-placement="bottom" title="Me gusta">
                                 <i class="bi bi-heart"></i>
@@ -186,6 +187,7 @@
                                 <i class="bi bi-heart-fill"></i>
                             </span>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
