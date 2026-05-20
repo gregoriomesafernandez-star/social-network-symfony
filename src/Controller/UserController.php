@@ -256,10 +256,8 @@ class UserController extends AbstractController
                         if (in_array($ext, $allowedExtensions)) {
                             
                             $file_name = $user->getId().time().'.'.$ext;
-                            $file->move(
-                                $this->getParameter('kernel.project_dir') . '/public/uploads/users',
-                                $file_name
-                            );
+
+                            $file->move("uploads/users", $file_name);
 
                             $user->setImage($file_name);
                         } else {
@@ -269,14 +267,16 @@ class UserController extends AbstractController
                         }
                     }
                 
+                    $this->entityManager->persist($user);
+                    
                     try {
 
-                        $this->entityManager->persist($user);
+                        
                         $this->entityManager->flush(); 
 
                         $this->addFlash('success', '¡Has modificado tus datos correctamente!'); 
-
-                    } catch (\Throwable $e) {
+                        return $this->redirectToRoute('user_edit');
+                    } catch (\Exception $e) {
                         
                         $this->addFlash('danger', 'Error al editar tus datos.');
                     }   
