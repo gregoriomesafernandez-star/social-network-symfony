@@ -87,7 +87,3 @@ You can register a new user or use the demo data to explore the application:
 Gregorio Mesa
 
 ---
-
-## Status
-
-Project under development
