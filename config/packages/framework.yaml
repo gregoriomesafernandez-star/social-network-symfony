@@ -5,6 +5,14 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    # Configuración de Assets (importante para que uploads funcione)
+    assets:
+        base_path: '/'
+        packages:
+            # Esto permite servir directamente la carpeta uploads sin que AssetMapper la interfiera
+            uploads:
+                base_path: '/uploads'
+
     #esi: true
     #fragments: true
 

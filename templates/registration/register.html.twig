@@ -1,0 +1,88 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Crear Cuenta</h2>
+                        <hr/>
+                        
+                        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                        
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.name) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.surname) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.nick) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.password) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_row(registrationForm.agreeTerms) }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3">
+                            Registrarme
+                        </button>
+
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+
+            function checkField(selector, url, fieldName) {
+                $(selector).blur(function() {
+
+                    let value = this.value.trim();
+
+                    if (value === "") return;
+
+                    let input = $(this);
+
+                    $.ajax({
+                        url: url,
+                        data: { [fieldName]: value },
+                        type: 'POST',
+                        success: function(response) {
+                            if (response === "used") {
+                                input.css("border", "2px solid red");
+                            } else {
+                                input.css("border", "2px solid green");
+                            }
+                        }
+                    });
+                });
+            }
+
+            checkField(".nick-input", "{{ path('nick_test') }}", "nick");
+            checkField(".email-input", "{{ path('email_test') }}", "email");
+            
+        });
+    </script>
+{% endblock %}

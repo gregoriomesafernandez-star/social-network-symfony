@@ -1,0 +1,107 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %} Lista Usuarios {% endblock %}
+
+{% block javascripts %} 
+    {{ parent() }}
+
+
+    <script src='{{ asset('js/custom/users.js') }}'></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+	<div class="card shadow  mt-5 ">
+		<div class="card-body p-5">
+
+			{% if type == 'following' %}
+
+				<h1 class="titulo-cartas mb-4 ">
+					Gente que esta siguiendo {{ profile_user.nick }}
+				</h1>
+
+			{% else %}
+
+				<h1 class="titulo-cartas mb-4 ">
+					Seguidores de {{ profile_user.nick }}
+				</h1>
+
+			{% endif %}
+
+			<div class="count">
+				<span class="badge bg-primary text-white emphasis border border-secondary border-opacity-25">
+					Total de personas:
+					{{ pagination.getTotalItemCount }}
+				</span>
+			</div>
+
+			<hr/>
+
+			<div class="box-content box-users">
+				{% for follow in pagination %}
+
+                    {% if type == 'following' %}
+
+                        {% set user = follow.followed %}
+
+                    {% else %}
+
+                        {% set user = follow.user %}
+
+                    {% endif %}
+
+
+					<div class="user-item d-flex align-items-center justify-content-between mb-1">
+						<div class="user-left">
+							<div class="avatar">
+								{% if user.image is not null and user.image is not empty %}
+									<img src="/uploads/users/{{ user.image }}" alt="Avatar de {{ user.name|default(user.email) }}">
+								{% else %}
+									<img class="default" src="/uploads/users/default-avatar.jpg" alt="Avatar por defecto">
+								{% endif %}
+							</div>
+
+							<div class="user-item-content ms-3">
+								<a class="user-link" href="{{ path('user_profile', { nickname: user.nick }) }}" class="mb-0">{{ user.name }}
+									{{ user.surname }}</a>
+								-
+								{{ user.nick }}
+								<p>{{ user.bio }}</p>
+							</div>
+						</div>
+
+						{% if app.user.id != user.id %}
+
+
+							<div class="pull-right buttons-following">
+								<button class="btn btn-success btn-follow {{ app.user | is_following(user) ? 'd-none' : '' }}" data-followed="{{user.id}}">
+									<i class="bi bi-person-plus"></i>
+									Seguir
+								</button>
+								<button class="btn btn-outline-danger btn-unfollow {{ app.user | is_following(user) ? '' : 'd-none' }}" data-followed="{{user.id}}">
+									<i class="bi bi-person-dash"></i>
+									Dejar de seguir
+								</button>
+							</div>
+
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- Barra de cargando (spinner) -->
+			<div class="loading-spinner text-center my-4" style="display: none;">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Cargando...</span>
+				</div>
+				<p class="mt-2">Cargando más usuarios...</p>
+			</div>
+
+			<div class="navigation">
+				{{ knp_pagination_render(pagination) }}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

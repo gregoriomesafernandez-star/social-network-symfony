@@ -1,0 +1,19 @@
+knp_paginator:
+    # Número de páginas que se muestran en la barra de paginación
+    page_range: 5
+
+    default_options:
+        # Nombre del parámetro en la URL (?page=2)
+        page_name: page
+        
+        # Parámetros para ordenar
+        sort_field_name: sort
+        sort_direction_name: direction
+        
+        # Optimiza consultas
+        distinct: true
+
+    # Plantillas personalizadas (puedes cambiarlas después  @KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig)
+    template:
+        pagination: 'pagination.html.twig'           # Tu plantilla de paginación / Tenemos en template la personal pagination.html.twig
+        sortable: 'sortable_link.html.twig'

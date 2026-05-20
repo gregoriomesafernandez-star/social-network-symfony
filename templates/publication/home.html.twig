@@ -1,0 +1,242 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %}Publicaciones{% endblock %}
+
+{% block javascripts %} 
+    {{ parent() }}
+
+    <script src='{{ asset('js/custom/home.js') }}'></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+
+        <!-- === TIMELINE (Izquierda - más ancho) === -->
+        <div class="col-lg-8 mb-4">
+            <div id="timeline" class="card shadow">
+                <div class="card-body p-4 p-lg-5">
+                    <h1 class="titulo-cartas mb-4">Timeline<hr/></h1>
+                    
+                    <div class="box-content">
+                         {% for publication in pagination %}
+                            <div class="d-flex col-lg-12 publication-item gap-2 mb-3">
+                                <div class="avatar flex-shrink-0">
+                                    {% if publication.user.image is not null and publication.user.image is not empty %}
+                                        <img src="/uploads/users/{{ publication.user.image }}" alt="Avatar de {{ publication.user.name|default(publication.user.email) }}">
+                                    {% else %}
+                                        <img class="default" src="/uploads/users/default-avatar.jpg" alt="Avatar por defecto">
+                                    {% endif %}
+                                </div>
+
+                               <div class="flex-grow-1">
+                                    <!-- Nombre, nick y fecha -->
+                                    <div class="d-flex align-items-baseline publication-item-content gap-2">
+                                        <p class="mb-0">
+                                            <a class="pub-name-link" href="{{ path('user_profile', { nickname: publication.user.nick }) }}">
+                                                {{ publication.user.name }} {{ publication.user.surname }}
+                                            </a>
+                                        </p>
+                                        -
+                                        <span class="pub-name-nick">{{ publication.user.nick }}</span>
+
+                                        <!-- Fecha arriba a la derecha -->
+                                        <span class="pub-date text-muted ms-auto">
+                                            {{ publication.createdAt | time_diff() }}
+                                        </span>
+                                    </div>
+
+                                    
+
+                                    <!-- Biografía / Texto de la publicación (debajo) -->
+                                    <div class="mt-2 flex-grow-1">
+                                       <p class="publication-text"> {{ publication.text }} </p>
+
+                                        <!-- Boton ELIMINAR -->
+                                        {% if publication.user.id is defined and publication.user.id == app.user.id %}
+                                            <span data-id={{ publication.id }} aria-hidden="true" 
+                                                class="btn btn-delete-pub icon" 
+                                                target="_blank"
+                                                title="Descargar imagen">
+                                                
+                                                <i class="bi bi-trash fs-5"></i> 
+                                                
+                                            </span>
+                                        {% endif %}
+
+                                        {% if publication.document is not null and publication.document is not empty %}
+                                            <a href="{{ asset('uploads/publications/documents/' ~ publication.document) }}" 
+                                                class="btn icon btn-doc" 
+                                                target="_blank"
+                                                title="Descargar documento PDF">
+                                                
+                                                <i class="bi bi-file-earmark-pdf fs-5"></i> 
+                                                
+                                            </a>
+                                        {% endif %}
+
+                                        {% if publication.image is not null and publication.image is not empty %}
+                                            <span  aria-hidden="true" 
+                                                class="btn btn-image icon" 
+                                                target="_blank"
+                                                title="Descargar imagen">
+                                                
+                                                <i class="bi bi-image-fill fs-5"></i> 
+                                                
+                                            </span>
+
+                                            <div class="pub-image"> 
+                                                <img src="{{ asset('uploads/publications/images/' ~ publication.image) }}" />
+                                            </div>
+                                            
+                                        {% endif %}
+
+
+                                        <!-- Botón Me Gusta -->
+                                        <div class="like d-flex justify-content-end mt-2">
+                                            {% if publication.user.id is defined and publication.user.id != app.user.id %}
+                                                <span 
+                                                    data-id="{{publication.id}}" 
+                                                    class="btn btn-like icon-like {{ app.user | liked(publication) ? 'd-none' : '' }}" 
+                                                    data-toggle="tooltip"
+                                                    data-placement="bottom"
+                                                    title="Me gusta" 
+                                                >
+                                                    <i class="bi bi-heart"></i>
+                                                </span>
+                                            {% endif %}
+                                            <span 
+                                                data-id="{{publication.id}}" 
+                                                class="active btn btn-unlike icon-unlike {{ app.user | liked(publication) ? '' : 'd-none' }}" 
+                                                data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="Ya no me gusta"
+                                            >
+                                                <i class="bi bi-heart-fill"></i>
+                                            </span>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                                
+                                <hr/>
+                                <div class="clearfix" ></div>
+                            </div>
+                         {% endfor %}
+
+                         <div class="navigation">
+                            {{ knp_pagination_render(pagination) }}
+                        </div>
+                        <!-- Barra de cargando (spinner) -->
+                        <div class="loading-spinner text-center my-4" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="mt-2">Cargando más publicaciones...</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- === COLUMNA DERECHA (Usuario + Crear publicación) === -->
+        <div class="col-lg-4">
+
+            <!-- Datos del Usuario -->
+            <div class="card shadow mb-4">
+                <div id="user-card" class="card-body p-4 text-center">
+                    <div class="avatar mb-3">
+                        {% if app.user.image is not null and app.user.image is not empty %}
+                            <img src="/uploads/users/{{ app.user.image }}" 
+                                 class="rounded-circle" 
+                                 width="120" 
+                                 alt="Avatar">
+                        {% else %}
+                            <img src="/uploads/users/default-avatar.jpg" 
+                                 class="rounded-circle" 
+                                 width="120" 
+                                 alt="Avatar">
+                        {% endif %}
+                    </div>
+
+                    <div class="name-surname">
+                        <a class="name" href="{{ path('user_profile', { nickname: app.user.nick }) }}">{{ app.user.name|default(app.user.email) }}</a>
+                        <p class="nickname text-muted mb-0">
+                            @{{ app.user.nick|default('usuario') }}
+                        </p>
+                    </div>
+
+                    {% set user_stats = app.user | user_stats %}
+
+                    <!-- SIGUIENDO -->
+                    <div class="following-data">
+                        <a href="{{ path('following_users', { nickname: app.user.nick }) }}">
+                            <span class="label-stat">
+                                Siguiendo
+                            </span>
+                            <span class="number-stat">
+                                {{ user_stats.following }}
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- SEGUIDORES -->
+                    <div class="following-data">
+                        <a href="{{ path('followed_users', { nickname: app.user.nick }) }}">
+                            <span class="label-stat">
+                                Seguidores
+                            </span>
+                            <span class="number-stat">
+                                {{ user_stats.followers }}
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- PUBLICACIONES -->
+                    <div class="following-data">
+                        <a href="{{ path('user_profile', { nickname: app.user.nick }) }}">
+                            <span class="label-stat">
+                                Publicaciones
+                            </span>
+                            <span class="number-stat">
+                                {{ user_stats.publications }}
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- LIKES -->
+                    <div class="following-data">
+                        <a href="{{ path('user_likes', { nickname: app.user.nick }) }}">
+                            <span class="label-stat">
+                                Me gustas
+                            </span>
+                            <span class="number-stat">
+                                {{ user_stats.likes }}
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Crear Publicación -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-white">
+                    <h6 class="mb-0 fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i>Crear publicación
+                    </h6>
+                </div>
+                <div class="card-body p-4">
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+
+{% if pageCount > 1 %}
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            {# ← Anterior #}
+            {% if current > 1 %}
+                <li class="page-item">
+                    <a class="page-link" 
+                       href="{{ path(route, query|merge({(pageParameterName): current - 1})) }}">
+                        ← Anterior
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Página actual #}
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página <strong>{{ current }}</strong> de {{ pageCount }}
+                </span>
+            </li>
+
+            {# Siguiente → #}
+            {% if current < pageCount %}
+                <li class="page-item">
+                    <a class="page-link" 
+                       href="{{ path(route, query|merge({(pageParameterName): current + 1})) }}">
+                        Siguiente →
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+{% endif %}

@@ -1,0 +1,38 @@
+{% extends 'layout/layout.html.twig' %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block content %}
+    <div class="container mb-5 mt-5">
+        <div class="col-lg-12 card shadow box-notifications">
+            <h4 class="titulo-cartas">Notificaciones<hr/></h4>
+            
+            <div class="box-content">
+                {% for notification in pagination %}
+                    <div class="col-lg-12 notification-item">
+                        <div class="alert alert-default">
+                            <i class="bi bi-bell-fill text-danger fs-4"></i>
+
+                            {% set notu = notification.typeId | get_user %}
+                            {% if notification.type == "follow" %}
+                               <a href="{{ path('user_profile', { nickname: notu.nick }) }}">{{ notu.name }}</a> te está siguiendo
+                            {% endif %}
+
+                            {% if notification.type == "like" %}
+                               <a href="{{ path('user_profile', { nickname: notu.nick }) }}">{{ notu.name }}</a> le ha dado me gusta a una de tus publicaciones
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+                
+                {% if pagination.getTotalItemCount == 0 %}
+                        <p class="text-center my-5 text-muted fs-6">No hay ninguna notificación</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

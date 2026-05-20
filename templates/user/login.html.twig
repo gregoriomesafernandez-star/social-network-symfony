@@ -1,0 +1,55 @@
+{% extends 'layout/layout.html.twig' %}   
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+
+    {# Mostrar error si el login falla #}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Iniciar Sesión<hr/></h2>
+                        
+                        <form action="{{ path('app_login') }}" method="POST">
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" 
+                                       name="_username" 
+                                       value="{{ last_username ?? '' }}" 
+                                       class="form-control" 
+                                       placeholder="tu@email.com"
+                                       autofocus>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Contraseña</label>
+                                <input type="password" 
+                                       name="_password" 
+                                       class="form-control">
+                            </div>
+
+                            <!-- Cuando hacemos login con Symfony redirigimos a home -->
+                            <input type="hidden" name="_target_path" value="{{ path('app_home') }}" />
+
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                Entrar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

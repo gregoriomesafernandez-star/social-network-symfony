@@ -1,0 +1,112 @@
+{% extends 'layout/layout.html.twig' %}   {# ← Así se extiende el layout de tu profe #}
+
+{% block title %}Mensajes Privados{% endblock %}
+
+{% block content %}
+
+    
+
+<div class="private-message container mt-3 ">
+        
+        <div class="d-flex flex-column flex-lg-row gap-4 private_messages card shadow mb-5">
+
+                    <div class="flex-grow-1">
+                        <h1 class="titulo-cartas mb-4 ">
+                            Mensajeria Privada
+                        </h1>  
+
+                        <hr/>
+                        <a class="btn btn-warning" href="{{ path('app_private_message_index') }}">
+                            Ver mensajes recibidos
+                        </a>
+
+				    </div>
+
+                    <div class="flex-grow-1">
+
+                        <h5>Mensajes enviados</h5>
+                        <hr/>
+
+                        <div class="box-content box-messages">
+                         {% for message in pagination %}
+                            <div class="d-flex col-lg-12 publication-item gap-2 mb-3">
+
+                                <!-- Imagen -->
+                                <div class="avatar flex-shrink-0">
+                                    {% if message.emitter.image is not null and message.emitter.image is not empty %}
+                                        <img src="/uploads/users/{{ message.emitter.image }}" alt="Avatar de {{ message.emitter.name|default(message.emitter.email) }}">
+                                    {% else %}
+                                        <img class="default" src="/uploads/users/default-avatar.jpg" alt="Avatar por defecto">
+                                    {% endif %}
+                                </div>
+
+                               <div class="flex-grow-1">
+                                    <!-- Nombre y nick -->
+                                    <div class="d-flex align-items-baseline publication-item-content gap-2">
+                                        <p class="mb-0">
+                                            <a class="pub-name-link" href="{{ path('user_profile', { nickname: message.emitter.nick }) }}">
+                                                {{ message.emitter.name }} {{ message.emitter.surname }}
+                                            </a>
+                                        </p>
+                                        -
+                                        Para: <span class="pub-name-nick">
+                                                <a class="pub-name-link" href="{{ path('user_profile', { nickname: message.receiver.nick }) }}">
+                                                    {{ message.receiver.nick }}
+                                                </a>
+                                              </span>
+
+                                        <!-- Fecha -->
+                                        <span class="pub-date text-muted ms-auto">
+                                            {{ message.createdAt | time_diff() }}
+                                        </span>
+                                    </div>
+
+                                    
+                                    <!-- Texto de la publicación -->
+                                    <div class="mt-2 flex-grow-1">
+                                       <p class="publication-text"> {{ message.message }} </p>
+
+                                        
+
+                                        {% if message.file is not null and message.file is not empty %}
+                                            <a href="{{ asset('uploads/message/documents/' ~ message.file) }}" 
+                                                class="btn icon btn-doc" 
+                                                target="_blank"
+                                                title="Descargar documento PDF">
+                                                
+                                                <i class="bi bi-file-earmark-pdf fs-5"></i> 
+                                                
+                                            </a> 
+                                        {% endif %}
+
+                                        {% if message.image is not null and message.image is not empty %}
+                                            <a href="{{ asset('uploads/message/images/' ~ message.image) }}" 
+                                                class="btn icon btn-doc" 
+                                                target="_blank"
+                                                title="Descargar Imagen">
+                                                
+                                                <i class="bi bi-image-fill fs-5"></i>
+                                                
+                                            </a> 
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <hr/>
+                                <div class="clearfix" ></div>
+                            </div>
+                         {% endfor %}
+
+                        {% if pagination.getTotalItemCount == 0 %}
+                            <p class="text-center my-5 text-muted fs-6">No has enviado ningún mensaje</p>
+                        {% endif %}
+
+                            <div class="navigation">
+                                {{ knp_pagination_render(pagination) }}
+                            </div>
+                        </div>
+                    </div>
+        </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,356 @@
+body{
+    background-color: #efefef;
+}
+.navbar-collapse .avatar{
+    background: white;
+    border-radius: 500px;
+    width: 35px;
+    height: 35px;
+    overflow: hidden;
+    float: left;
+    margin-right: 12px;
+    margin-top: -5px;
+}
+
+.user-item {
+    border-bottom: 1px solid #e9ecef; 
+    padding-bottom: 17px;  
+    padding-top: 15px;  
+}
+
+.user-left {
+    display: flex;
+    align-items: center;
+}
+
+.hover-search:hover {
+    color: #0d6efd !important;   
+}
+
+.navbar-collapse img{
+    width: 100%;
+    text-align: center;
+}
+
+.nav-link{
+    margin-top: 10px;
+}
+
+li[id*="error"] {
+    color: #dd4756 !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    list-style: none;
+    padding-left: 0;
+}
+
+
+.navbar-nav .nav-link {
+    color: white !important;
+    transition: none;          
+}
+
+.navbar-nav .nav-link:hover {
+    color: white !important;    
+    background-color: transparent !important;
+}
+
+
+.navbar-nav .nav-link:hover {
+    opacity: 0.9;               
+}
+
+
+.user-item .avatar,
+.publication-item .avatar {
+    background: #eee;
+    border-radius: 550px;
+    width: 75px;
+    height: 75px;
+    overflow: hidden;
+    float: left;
+}
+
+.user-item .avatar img,
+.publication-item  img {
+    width: 100%;
+    text-align: center;
+}
+
+.publication-item {
+    border-bottom: 2px solid #e9ecef;
+    padding: 25px;
+    margin-bottom: 10px;
+}
+
+
+.user-item .user-item-content {
+    padding: 10px;
+    margin-left: 85px;
+}
+
+/* HOME */
+
+#timeline{
+    min-height: 650px;
+}
+
+#new-publication input,
+#new-publication textarea
+{
+    margin-bottom: 20px;
+}
+
+#new-publication textarea
+{
+    max-height: 200px;
+}
+
+#user-card{
+    margin: -16px;
+    margin-bottom: 5px;
+    margin-top: 4px;
+}
+
+.name{
+    font-size: 19px;
+    color: #444;
+    font-weight: bold;
+}
+
+.nickname{
+
+    color: #858585;
+
+}
+
+.rounded-circle {
+    height: 111px;
+}
+
+#user-card .following-data{
+    width: 25%;
+    float: left;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 0px;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+#user-card .following-data a{
+    color: #444;
+    text-decoration: none;
+}
+
+#user-card .following-data a:hover {
+    text-decoration: underline;
+}
+
+.titulo-cartas{
+    color: #868b90;                    
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1.5rem;                
+    font-weight: 400;                 
+    letter-spacing: -0.02em;
+    
+}
+
+#user-card .following-data .label-stat{
+    display:block
+}
+
+#user-card .following-data .number-stat{
+    display:block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.alert{
+ margin-top: 15px;
+}
+
+.pub-name-link{
+    color:black;
+    font-weight: bold;
+}
+
+.pub-image{
+    display: none;
+    transition: all 300ms;
+}
+
+.pub-image img{
+    width: 100%;
+    text-align: center;
+    display: block;
+    margin: 0px auto;
+}
+
+.publication-item .icon{
+    margin-right: -10px;
+    cursor: pointer;
+    margin-left: 0px;
+}
+
+.like .btn-like,
+.like .btn-unlike{
+    font-size: 25px;
+    border: none !important;
+    outline: none !important;
+
+}
+
+.like .btn-like:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.like .active,
+.unlike .active{
+    color: red;
+}
+
+.form-control{
+    margin-bottom:15px;
+}
+
+
+/* PERFILES */
+
+.profile-box,
+.box-notifications,
+.private_messages{
+    margin: 0 auto; 
+    padding: 20px;
+}
+
+.profile-box .profile-avatar{
+    background: #eee;
+    border-radius: 700px;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    margin: 0 auto; /* CEntramos todo */
+    margin-bottom: 15px;
+}
+
+.profile-box .profile-avatar img{
+    width: 100%;
+    text-align: center;
+    
+
+}
+
+.profile-box .name-surname{
+    margin: 0 auto; 
+    text-align: center;
+
+}
+
+.profile-box .bio{
+
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+
+}
+
+.profile-box #user_stats{
+
+    margin: 0 auto; 
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    width: 45%;
+}
+
+.profile-box #user_stats .following-data{
+
+    float: left;
+}
+
+.profile-box #user_stats a{
+
+    color:#444;
+    text-decoration: none;
+}
+
+.profile-box #user_stats a:hover {
+    text-decoration: underline;
+}
+
+.profile-box #user_stats .label-stat{
+
+    display: block;
+    font-weight: 18px;
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.profile-box #user_stats .number-stat{
+
+    font-weight: bold;
+}
+
+.user-link{
+    color:#444;
+    font-weight: bold;
+}
+
+
+.label-notifications,
+.label-notifications-msg {
+    text-align: center;
+    border-radius: 4px;
+    border-color: grey;
+    border: 1px solid #9ca3af;
+    background-color: #16ca0d;
+    padding: 4px;
+    min-width: 28px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.buttons-following{
+    margin:10px
+}
+
+/* ==== RESPONSIVE EN MÓVIL ==== */
+@media (max-width: 576px) {
+    .user-item .avatar,
+    .publication-item .avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .publication-item {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 410px) {
+    .user-item .avatar,
+    .publication-item .avatar {
+        width: 30px;
+        height: 30px;
+    }
+
+    .publication-item {
+        padding: 10px;
+    }
+}
+
+/* FIX: imagen bien recortada */
+.user-item .avatar img,
+.publication-item .avatar img {
+    object-fit: cover;
+}

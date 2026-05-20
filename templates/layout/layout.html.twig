@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SOCIAL NETWORK{% endblock %}</title>
+
+    {% block stylesheets %}
+    
+        <!-- Bootstrap Cosmo (local) -->
+        <link href="{{ asset('css/bootstrap.cosmo.min.css') }}" rel="stylesheet">
+
+        <!-- styles.css (local) -->
+        <link href="{{ asset('css/styles.css') }}" rel="stylesheet"> 
+
+        <!-- Bootstrap Icons -->
+        <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet">
+    {% endblock %}
+
+    {% block javascripts %}
+
+        <script type="text/javascript">
+             window.routes = {
+                notifications: "{{ path('notifications_get') }}",
+                messages: "{{ path('private_message_notification_get') }}"
+            };
+
+            window.userLogged = {{ app.user ? 'true' : 'false' }};
+
+            const BASE_URL = "{{ app.request.getSchemeAndHttpHost() }}";
+
+        </script>
+
+        <!-- jQuery -->
+        <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+
+        <script src="{{ asset('js/custom/common.js') }}"></script>
+
+    {% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    {# ==== NAVBAR ==== #}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top mb-8">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="{{ app.user ? path('app_home') : path('app_login') }}">
+                <i class="bi bi-people-fill me-2"></i> SocialNet
+            </a>
+
+            {# hamburguesa para abrir/cerrar el menú en móvil #}
+            <button 
+                class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav" 
+                aria-expanded="false" 
+                aria-label="Abrir menú"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+            {% if is_granted('ROLE_USER') %}
+                <ul class="nav navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_home') }}">
+                               <i class="bi bi-house-fill"></i>&nbsp; Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_users') }}">
+                                <i class="bi bi-people-fill"></i>&nbsp; Gente
+                            </a>
+                        </li>
+                       <li class="nav-item ms-3">
+                            <form method="GET" action="{{ path('user_search') }}" class="d-flex">
+                                <div class="input-group input-group-sm mt-2" style="width: 240px;">
+                                    <!-- Input -->
+                                    <input 
+                                        type="text" 
+                                        class="form-control rounded-pill ps-4 pe-5 mb-2"
+                                        name="search" 
+                                        placeholder="Buscar usuarios..." 
+                                        value="{{ app.request.get('search')|default('') }}">
+
+                                    <!-- Lupa  -->
+                                    <button 
+                                        type="submit"
+                                        class="position-absolute border-0 bg-transparent p-0 text-muted"
+                                        style="right: 18px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+            {% endif %}
+            
+                
+                <ul class="navbar-nav ms-auto">
+                    {% if is_granted('ROLE_USER') %}
+
+                        <!-- MENSAJE PRIVADO -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_private_message_index') }}">
+                                <i class="bi bi-chat-dots-fill"></i>
+                                Mensaje privado
+                                <span class="label label-success label-notifications-msg"></span>
+                            </a>
+                        </li>
+
+                        <!-- NOTIFICACIONES -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('notificacions_page') }}">
+                                <i class="bi bi-bell-fill"></i>
+                                Notificaciones
+                                <span class="label label-success label-notifications"></span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {# Si el usuario ESTÁ logueado #}
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <div class="avatar">
+                                    {% if app.user.image is not null and app.user.image is not empty %}
+                                        <img src="{{ asset('uploads/users/' ~ app.user.image) }}"
+                                            alt="Avatar de {{ app.user.name|default(app.user.email) }}"
+                                    >
+                                    {% else %}
+                                        <img src="{{ asset('uploads/users/default-avatar.jpg') }}" 
+                                            alt="Avatar por defecto"
+                                        >
+                                    {% endif %}
+                                </div>
+                                {{ app.user.name ?? 'Usuario' }} {{ app.user.surname ?? '' }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ path('user_edit') }}"><i class="bi bi-person-fill"></i> Mi Perfil </a></li>
+                                <li><a class="dropdown-item" href="{{ path('user_profile', { nickname: app.user.nick }) }}"><i class="bi bi-card-image"></i> Mis publicaciones  </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                                       <i class="bi bi-door-open-fill"></i> Salir
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    {# Si el usuario NO está logueado #}
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <i class="bi bi-box-arrow-in-right"></i> Entrar
+                            </a>
+                        </li>
+                        {% if app.request.get('_route') != 'app_register' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_register') }}">
+                                    <i class="bi bi-person-plus"></i> Registro
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- ==== MENSAJES FLASH (Global) ==== -->
+    <div class="container mt-5 pt-3">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="clearfix"></div>
+     
+    <!-- Contenido principal -->
+    <section class="container mt-5">
+        {% block content %}
+
+             <!-- Contenido -->
+             
+        {% endblock %}
+    </section>
+
+    <!-- Footer -->
+    <footer class="navbar-dark bg-primary text-light py-4 mt-auto">
+        <div class="container">
+
+            <p class="text-center mb-0">
+                SocialNet - Proyecto desarrollado con Symfony por Gregorio Jose Mesa Fernández
+            </p>
+
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    
+    <script src="{{ asset('js/infinite-ajax-scroll.min.js') }}"></script>
+</body>
+</html>
