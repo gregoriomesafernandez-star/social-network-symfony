@@ -379,5 +379,15 @@ li[id*="error"] {
     
 }
 
+@media (min-width: 768px) and (max-width: 1199px) {
+    .nav-label {
+        display: none;
+    }
+
+    .input-group{
+        width: 180px !important;
+    }
+}
+
 
 

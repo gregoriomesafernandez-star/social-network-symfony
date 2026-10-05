@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class DefaultController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('', name: 'home')]
     public function home(): Response
     {
         return $this->redirectToRoute('app_login');
