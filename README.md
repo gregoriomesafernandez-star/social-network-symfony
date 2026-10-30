@@ -44,7 +44,9 @@ composer install
 
 Open the .env file and set your own application secret:
 
+```env
 APP_SECRET=your_own_secret_key
+```
 
 You can generate a secure key using:
 
