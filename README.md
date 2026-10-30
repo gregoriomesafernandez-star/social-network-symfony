@@ -50,7 +50,9 @@ APP_SECRET=your_own_secret_key
 
 You can generate a secure key using:
 
+```bash
 php -r "echo bin2hex(random_bytes(32));"
+```
 
 Copy the generated value and replace your_own_secret_key.
 
