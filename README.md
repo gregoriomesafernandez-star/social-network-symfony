@@ -40,13 +40,45 @@ cd social-network-symfony
 composer install
 ```
 
-Configure the database in the `.env` file:
+## Environment configuration
+
+Open the .env file and set your own application secret:
+
+APP_SECRET=your_own_secret_key
+
+You can generate a secure key using:
+
+php -r "echo bin2hex(random_bytes(32));"
+
+Copy the generated value and replace your_own_secret_key.
+
+---
+
+## Database setup
+
+1. Configure the database
+
+Open the .env file and update the DATABASE_URL with your MySQL or MariaDB credentials:
 
 ```env
-DATABASE_URL="mysql://user:password@127.0.0.1:3306/database_name"
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/database_name?serverVersion=10.4&charset=utf8mb4"
 ```
 
-Run database setup:
+Replace:
+
+- user with your database username.
+- password with your database password.
+- database_name with your database name.
+- serverVersion with your installed MySQL or MariaDB version.
+
+For example:
+
+MySQL 8.0: serverVersion=8.0
+MariaDB 10.4: serverVersion=10.4
+
+2. Create the database and load the data
+
+Run the following commands:
 
 ```bash
 php bin/console doctrine:database:create
@@ -54,6 +86,10 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 symfony server:start
 ```
+
+Open http://127.0.0.1:8000 in your browser.
+
+Note: The fixtures command may remove existing database records before loading sample data. Use it with a fresh development database.
 
 ---
 
