@@ -111,7 +111,7 @@ You can use the following demo accounts:
 
 ## Usage
 
-You can register a new user or use the demo data to explore the application:
+You can register a new user to explore the application:
 
 - Create publications
 - Follow users
