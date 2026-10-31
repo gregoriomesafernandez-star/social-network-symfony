@@ -1,6 +1,7 @@
 body{
     background-color: #efefef;
 }
+
 .navbar-collapse .avatar{
     background: white;
     border-radius: 500px;
@@ -10,6 +11,15 @@ body{
     float: left;
     margin-right: 12px;
     margin-top: -5px;
+}
+
+.nickname-truncate {
+    display: inline-block;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 .user-item {

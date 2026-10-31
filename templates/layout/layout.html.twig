@@ -137,7 +137,10 @@
                                         >
                                     {% endif %}
                                 </div>
-                                {{ app.user.name ?? 'Usuario' }} {{ app.user.surname ?? '' }}
+
+                                <span class="nickname-truncate">
+                                    {{ app.user.nick ?? 'Usuario' }}
+                                </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{{ path('user_edit') }}"><i class="bi bi-person-fill"></i> Mi Perfil </a></li>
