@@ -153,11 +153,13 @@
 
                     {# Si el usuario NO está logueado #}
                     {% else %}
+                        {% if app.request.get('_route') != 'app_login' %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_login') }}">
                                 <i class="bi bi-box-arrow-in-right"></i> Entrar
                             </a>
                         </li>
+                        {% endif %}
                         {% if app.request.get('_route') != 'app_register' %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_register') }}">
