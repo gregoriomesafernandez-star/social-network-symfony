@@ -354,7 +354,7 @@ li[id*="error"] {
     }
 }
 
-@media (max-width: 990px) {
+@media (max-width: 993px) {
     .user-item {
         flex-direction: column; 
     }
