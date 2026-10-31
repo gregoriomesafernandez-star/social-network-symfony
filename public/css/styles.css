@@ -136,9 +136,10 @@ li[id*="error"] {
     float: left;
     text-align: center;
     border-top: 1px solid #ccc;
-    padding: 0px;
+    padding-bottom: 15px;
     padding-top: 15px;
     margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 #user-card .following-data a{
@@ -254,8 +255,8 @@ li[id*="error"] {
 .profile-box .bio{
 
     text-align: center;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 5px;
 
 }
 
@@ -353,7 +354,7 @@ li[id*="error"] {
     }
 }
 
-@media (max-width: 1030px) {
+@media (max-width: 990px) {
     .user-item {
         flex-direction: column; 
     }
